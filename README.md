@@ -261,7 +261,7 @@ run_mr_single_iteration/run_mr函数是驱动单次MapReduce计算流程的核�
 
 通知底层内存分配器本次计算已结束，可以进行资源回收等清理工作（例如，解除共享内存段的附加）。
 
-## 三. MapReduce的示例任务一 ——Kmeans
+## 三. MapReduce的示例任务 ——Kmeans
 
 KMeans（K-均值）是一种广泛应用的无监督机器学习算法，其目标是将一个数据集分割成K个不同的“簇”（cluster），使得每个数据点都属于离它最近的那个簇的中心。本项目利用MapReduce并行计算模型，高效地实现了KMeans算法的核心迭代过程，特别适用于处理大规模数据集。
 
