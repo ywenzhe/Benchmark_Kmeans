@@ -146,15 +146,29 @@ g++ -std=c++17 -Wall -O2 main.cpp -o kmeans_runner -pthread
 ```C++
 sudo bash total_exp.sh
 ```
+# 相关文档
 
-脚本执行过程图：
+保存到了飞书中
 
-![img](https://jianmucloud.feishu.cn/space/api/box/stream/download/asynccode/?code=NGI2NmYyNGYwMjJhZGMwNWI4YTU5YmVmM2I4Yzc4Y2RfNUc3ZXQ4bnJwZXdmWGZPYkJ1dVJZN1hyZ1MxYmhTVGRfVG9rZW46RXI4M2JUM2VQb3h0OFN4N1lidWNUYkw4bnVkXzE3NTQ5NjQzNDQ6MTc1NDk2Nzk0NF9WNA)
-
-脚本执行成功结果图：
-
-![img](https://jianmucloud.feishu.cn/space/api/box/stream/download/asynccode/?code=YzkxMTNkNDRlMjNkNjE4NjgxNmNiZjdlOWY2OGYzODNfNUx4MjNvbzRtY1dLSVNoN0d3eFF2a1VvUWxXWlR6aTFfVG9rZW46VWRiTmJGQnQ3b1ZwZ054d1dFMGM4TjdkbkJkXzE3NTQ5NjQzNDQ6MTc1NDk2Nzk0NF9WNA)
-
+1. TPP基本概念与使用方法
+   *  https://jianmucloud.feishu.cn/wiki/JUK3wfOFyi72hckvXKrcMx0LnUe
+   * TPP的基本使用文档，记录了TPP来源，使用方法，如何观测TPP相关数据等。
+2. 117已下载的数据集
+   * https://jianmucloud.feishu.cn/wiki/ArjQw8ELZifwFKkDA56cpJcznM4
+   * 记录了下载好的数据集，数据集保存位置，数据集来源等。
+3. Benchmark——Kmeans，WordCount介绍 
+   * https://jianmucloud.feishu.cn/wiki/ENWNwdG5MiBBCEkA5gUc1Mj7nmf
+   * 记录了这两个benchmark代码的详细内容，以及如果要使用此benchmark框架应当如何改动。
+4. TPP，Weighted Interleaving对WordCount，Kmeans的影响
+   *  https://jianmucloud.feishu.cn/wiki/VX8Tw01RiiIF6BkEs29cFXewnwd
+   * 探索不同的TPP，Weighted Interleaving等变量设置下，会怎样影响页面调度以及程序的执行情况。
+   * 实验结果表格和实验图都记录在这里。
+5. WordCount on TPP实验数据 
+   * https://jianmucloud.feishu.cn/wiki/Dw8ywE8g2iQqk0ksSJocThxSnPh
+   * 保存了TPP，Weighted Interleaving对WordCount影响的原始数据。
+6. Kmeans on TPP实验数据 
+   * https://jianmucloud.feishu.cn/wiki/AgltwTBvwiFBQUkfDjjcJER7nRb
+   * 保存了TPP，Weighted Interleaving对Kmeans影响的原始数据。
 # 代码结构及框架使用说明
 
 ## 一. 基本接口
@@ -174,13 +188,9 @@ BaseAllocator.h为内存分配器的接口文件，一般无需改动。
 1. 继承BaseAllocator.h，写一个单独的exampleAllocator.h，格式参考StandardAllocator.h。
 2. 修改main.cpp文件
 
-![img](https://jianmucloud.feishu.cn/space/api/box/stream/download/asynccode/?code=NDllYWRiODI2ZWVkMTc2NmZhMDg5ZDUzMDJjMzU4NDdfYkpjR2Y2TXBWWlBrSHo4QWtQR0JQNXpGc1Npc3RtMk5fVG9rZW46RG16UGJXeVo4b0tHbXp4UkJ5bWN6MHZJbk1jXzE3NTQ5NjQ1MDQ6MTc1NDk2ODEwNF9WNA)
-
 在这里加入一个else分支，让allocator初始化为自定义的exampleAllocator。
 
-![img](https://jianmucloud.feishu.cn/space/api/box/stream/download/asynccode/?code=ODk3ZTQ1ZjQ3N2E1YWQxNTM4ZTU0YjVkN2I3Y2M1ZTlfUUpEMXN0dVBCbW1PS2hwOWxlVldCbVRVR3ZVQlFYWjlfVG9rZW46WFZvdmJsVnFxb0tyWXp4aW5jM2N1eWJ0bndmXzE3NTQ5NjQ1MDQ6MTc1NDk2ODEwNF9WNA)
-
-为了美观，也可以修改上图main.cpp中的print_usage函数的第22行，加入用户自定义的Allocator名。
+为了美观，也可以修改main.cpp中的print_usage函数的第22行，加入用户自定义的Allocator名。
 
 在执行可执行文件时，命令需要加上图中自定义的名称。
 
@@ -208,8 +218,6 @@ BaseDataManager.h是数据读写的基本接口，用来管理数据的加载。
 
 1. 首先在main.cpp中加入用户写好的头文件，如exmapleDataSource.h。
 2. 在main.cpp创建数据源部分加入你的else if分支，将dataSource示例化为你创建的exmapleDataSource。
-
-![img](https://jianmucloud.feishu.cn/space/api/box/stream/download/asynccode/?code=NTYwZmE3M2YxYzUxNjUyMmZmMTc4ODhmM2VmMGIxZWFfblYzUHNNV01LQktiYmxnNUNMMWhidUVlQjNab0JQTTJfVG9rZW46TlQzbmJQbWl4b3BPdER4bDByZGNyZmlMbjllXzE3NTQ5NjQ1MDQ6MTc1NDk2ODEwNF9WNA)
 
 ## 二. MapReduce接口(MapReduce.h)
 
