@@ -10,11 +10,11 @@
 #### 软件环境
 
 - Linux Kernel >= 6.9.0-smdk
-- OS version = Ubuntu 22.04.5 LTS
+- OS version >= Ubuntu 22.04.5 LTS
 - CMake >= 3.22.1
-- Jemalloc: 5.2.1-4ubuntu
-- Intel TBB: tbb = 2021.5.0-7ubuntu2, tbb-devel = 2021.5.0-7ubuntu2
-- gcc：11.4.0
+- Jemalloc >= 5.2.1-4ubuntu
+- Intel TBB: tbb >= 2021.5.0-7ubuntu2, tbb-devel >= 2021.5.0-7ubuntu2
+- gcc >= 11.4.0
 
 # Kmeans数据集——**Twitter** **follower** **network-2010**
 
