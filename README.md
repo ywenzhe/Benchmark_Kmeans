@@ -68,13 +68,13 @@ aria2c -c -x 16 -s 16 "https://snap.stanford.edu/data/twitter-2010.txt.gz"
 wget -c "https://snap.stanford.edu/data/twitter-2010.txt.gz"
 ```
 
-1. 解压
+2. 解压
 
 ```C++
 gunzip twitter-2010.txt.gz
 ```
 
-1. 特征工程
+3. 特征工程
 
 解压后的数据集（twitter-2010.txt）不能直接使用，需要进行特征工程，成功后会得到kmeans_features_duckdb.txt，这个文件可以作为Kmeans项目的数据源文件。
 
@@ -106,13 +106,13 @@ $ head -n 10 kmeans_features_duckdb.txt #特征工程后可用于kmeans的数据
 -0.01415563 -0.09658127 -0.00645752
 ```
 
-1. 编译
+4. 编译
 
 ```C++
 g++ -std=c++17 -Wall -O2 main.cpp -o kmeans_runner -pthread
 ```
 
-1. 运行
+5. 运行
 
 一个完整的运行命令需要遵循以下格式：
 
@@ -141,7 +141,7 @@ g++ -std=c++17 -Wall -O2 main.cpp -o kmeans_runner -pthread
 ./kmeans_runner 20 20 4 ./kmeans_features_duckdb.txt 3
 ```
 
-1. （可选）如果想要进行TPP，Weighted Interleaving对Kmeans的评估，可以执行total_exp.sh脚本
+6. （可选）如果想要进行TPP，Weighted Interleaving对Kmeans的评估，可以执行total_exp.sh脚本
 
 ```C++
 sudo bash total_exp.sh
