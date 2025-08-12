@@ -182,7 +182,7 @@ BaseAllocator.h为内存分配器的接口文件，一般无需改动。
 
 为了美观，也可以修改上图main.cpp中的print_usage函数的第22行，加入用户自定义的Allocator名。
 
-1. 在执行可执行文件时，命令需要加上图[Benchmark——Kmeans，WordCount介绍](https://jianmucloud.feishu.cn/wiki/ZksiwMN1mikxLTk0JoVcNUOinXb?fromScene=spaceOverview#share-UYvkdMn9loXH08x1j5ccsOlAnNd)中写好的名称。
+在执行可执行文件时，命令需要加上图[Benchmark——Kmeans，WordCount介绍](https://jianmucloud.feishu.cn/wiki/ZksiwMN1mikxLTk0JoVcNUOinXb?fromScene=spaceOverview#share-UYvkdMn9loXH08x1j5ccsOlAnNd)中写好的名称。
 
 如原来的命令是
 
@@ -230,20 +230,20 @@ run_mr_single_iteration/run_mr函数是驱动单次MapReduce计算流程的核�
 
 默认是一个空操作，除非用户实现了自己的Allocator示例。
 
-1. **数据分片 (****`splice(...)`****)**:
+2. **数据分片 (****`splice(...)`****)**:
 
 `splice` 函数的职责是将原始的、连续的输入数据块（`map_data`）分割成多个小的数据片段。
 
 实际执行的是子类实现的 `splice` 纯虚函数。
 
-1. **启动** **`Mapper`** **和** **`Reducer`** **线程**
-2. **Map阶段：**
+3. **启动** **`Mapper`** **和** **`Reducer`** **线程**
+4. **Map阶段：**
 
 执行map_func任务，其中必要的一步是调用 `emit_intermediate` 函数，将处理得到的中间结果（键值对）存入共享的中间数据结构 `vec` 中。
 
 每个 `Mapper` 线程完成其 `map_func` 后，会在 `pthread_barrier_wait(&barrier_map)` 处阻塞等待。
 
-1. **Reduce阶段**:
+5. **Reduce阶段**:
 
 通过第一次同步后，所有 `Reducer` 线程开始并发执行。每个线程调用由子类实现的 `reduce_func`。
 
@@ -251,13 +251,13 @@ run_mr_single_iteration/run_mr函数是驱动单次MapReduce计算流程的核�
 
 每个 `Reducer` 线程完成其 `reduce_func` 后，会在 `pthread_barrier_wait(&barrier_reduce)` 处阻塞等待。
 
-1. **线程汇合与资源清理 (****`join`** **and** **`free`****)：**
+6. **线程汇合与资源清理 (****`join`** **and** **`free`****)：**
 
 主线程通过调用每个 `std::thread` 对象的 `join()` 方法，等待所有 `Mapper` 和 `Reducer` 线程执行完毕。
 
 释放为线程参数动态分配的内存（`map_parameter` 和 `reduce_parameter`）以及为数据分片分配的辅助数组（`map_data_arr` 和 `map_data_dis`）。
 
-1. **关闭内存分配器 (****`allocator->shutdown()`****)**:
+7. **关闭内存分配器 (****`allocator->shutdown()`****)**:
 
 通知底层内存分配器本次计算已结束，可以进行资源回收等清理工作（例如，解除共享内存段的附加）。
 
@@ -273,11 +273,11 @@ KMeans（K-均值）是一种广泛应用的无监督机器学习算法，其目
 
 将存储数据的double数组均分为map线程个数的块，将其分配到多个map线程中。
 
-1. `map_func`
+2. `map_func`
 
 每个Mapper线程独立执行`KMeans::map_func` 函数，Mapper会找到计算该点到聚类中心的距离，记录距离最小的中心ID，通过emit_intermediate，将这个处理好的数据点发送给reducer，聚到同一类的点会由同一个reducer来处理。
 
-1. `reduce_func`
+3. `reduce_func`
 
 每个Reducer线程在 `KMeans::reduce_func` 中执行。他会将自己分内的所有点进行平均，算出一个新的中心点。
 
@@ -296,11 +296,11 @@ main.cpp是专为Kmeans任务设计的驱动程序，主要依靠调用上层接
 - **`<dimensions>`** **(argv)**: 数据集中每个数据点的维度。例如，对于二维空间中的点，这个值就是2。它同样被 `std::stoull(argv[5])` 解析为一个无符号长长整型 (`size_t`)。
 - **`iterations`**: KMeans算法的迭代次数。
 
-1. 设置组件 & 加载数据：
+2. 设置组件 & 加载数据：
 
 这里完成了allocator和dataSource的初始化，并从输入文件中加载了数据。
 
-1. 创建KMeans MapReduce 任务
+3. 创建KMeans MapReduce 任务
 
 ```C++
   auto mr_job = std::make_unique<KMeans>(
@@ -313,7 +313,7 @@ main.cpp是专为Kmeans任务设计的驱动程序，主要依靠调用上层接
         );
 ```
 
-1. 执行任务并记录时间
+4. 执行任务并记录时间
 
 MapReduce任务已集成到run_mr_single_iteration函数中，详见本文章2.2小节。在Kmeans任务中需要中心点的不断迭代，因此会将此函数进行循环，wordCount则不需要。
 
