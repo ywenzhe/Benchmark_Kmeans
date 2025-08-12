@@ -182,7 +182,7 @@ BaseAllocator.h为内存分配器的接口文件，一般无需改动。
 
 为了美观，也可以修改上图main.cpp中的print_usage函数的第22行，加入用户自定义的Allocator名。
 
-在执行可执行文件时，命令需要加上图[Benchmark——Kmeans，WordCount介绍](https://jianmucloud.feishu.cn/wiki/ZksiwMN1mikxLTk0JoVcNUOinXb?fromScene=spaceOverview#share-UYvkdMn9loXH08x1j5ccsOlAnNd)中写好的名称。
+在执行可执行文件时，命令需要加上图中自定义的名称。
 
 如原来的命令是
 
